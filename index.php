@@ -18,7 +18,7 @@ if (!empty($_SESSION['active'])) {
             $query->execute(array($usuario));
             $data = $query->fetch();
 
-            if (password_verify(password: $pass, $data['password'])) {
+            if (password_verify($pass, $data['password'])) {
                 $_SESSION['active'] = true;
                 $_SESSION['idUser'] = $data['user_id'];
                 $_SESSION['nombre'] = $data['nombre'];
