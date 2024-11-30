@@ -1,7 +1,7 @@
 $('#tableInscripciones').DataTable();
 var tableInscripciones;
 
-window.addEventListener('DOMContentLoaded',function(){
+window.addEventListener('DOMContentLoaded', function () {
     tableInscripciones = $('#tableInscripciones').DataTable({
         "aProcessing": true,
         "aServerSide": true,
@@ -13,22 +13,22 @@ window.addEventListener('DOMContentLoaded',function(){
             "dataSrc": ""
         },
         "columns": [
-            {"data":"inscripcion_id"},
-            {"data":"nombre"},
-            {"data":"nombre_materia"},
-            {"data":"tipo_turno"},
-            {"data":"estatusI"},
-            {"data":"options"},
+            { "data": "inscripcion_id" },
+            { "data": "nombre" },
+            { "data": "nombre_materia" },
+            { "data": "tipo_turno" },
+            { "data": "estatusI" },
+            { "data": "options" },
         ],
         "resonsieve": true,
         "bDestroy": true,
         "iDisplayLength": 10,
-        "order": [[0,"asc"]]
+        "order": [[0, "asc"]]
     });
 
     // CREAR INSCRIPCION
     var formInscripcion = document.querySelector('#formInscripcion');
-    formInscripcion.onsubmit = function(e) {
+    formInscripcion.onsubmit = function (e) {
         e.preventDefault();
 
         var idInscripcion = document.querySelector('#idInscripcion').value;
@@ -37,29 +37,29 @@ window.addEventListener('DOMContentLoaded',function(){
         var turno = document.querySelector('#listTurno').value;
         var status = document.querySelector('#listStatus').value;
 
-        if(alumno == '' || curso == '' || turno == '' || status == '') {
-            swal('Atencion','Todos los campos son necesarios','error');
+        if (alumno == '' || curso == '' || turno == '' || status == '') {
+            swal('Atencion', 'Todos los campos son necesarios', 'error');
             return false;
         }
 
         var request = (window.XMLHttpRequest) ? new XMLHttpRequest : new ActiveXObject('Microsoft.XMLHTTP');
         var ajaxUrl = './models/inscripciones/ajax_inscripciones.php';
         var formData = new FormData(formInscripcion);
-        request.open('POST',ajaxUrl,true);
+        request.open('POST', ajaxUrl, true);
         request.send(formData);
-        request.onreadystatechange = function() {
-            if(request.readyState == 4 && request.status == 200) {
+        request.onreadystatechange = function () {
+            if (request.readyState == 4 && request.status == 200) {
                 var objData = JSON.parse(request.responseText);
-                if(objData.status) {
+                if (objData.status) {
                     $('#modalFormInscripcion').modal('hide');
                     formInscripcion.reset();
-                    swal('Crear Inscripcion',objData.msg,'success');
-                    tableInscripciones.ajax.reload(function(){
+                    swal('Crear Inscripcion', objData.msg, 'success');
+                    tableInscripciones.ajax.reload(function () {
                         editInscripcion();
                         delInscripcion();
                     })
                 } else {
-                    swal('Atencion',objData.msg,'error');
+                    swal('Atencion', objData.msg, 'error');
                 }
             }
         }
@@ -67,24 +67,24 @@ window.addEventListener('DOMContentLoaded',function(){
     }
 });
 
-window.addEventListener('load',function(){
+window.addEventListener('load', function () {
     editInscripcion();
     delInscripcion();
     getOptionAlumnos();
     getOptionCursos();
     getOptionTurnos();
-},false);
+}, false);
 
 function getOptionAlumnos() {
     var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
     var ajaxUrl = './models/options/options-alumnos.php';
-    request.open('GET',ajaxUrl,true);
+    request.open('GET', ajaxUrl, true);
     request.send();
-    request.onreadystatechange = function() {
-        if(request.readyState == 4 && request.status == 200) {
+    request.onreadystatechange = function () {
+        if (request.readyState == 4 && request.status == 200) {
             var option = JSON.parse(request.responseText);
-            option.forEach(function(valor){
-               option += '<option value="'+valor.alumno_id+'">'+valor.nombre+' '+valor.apellido+'</option>';  
+            option.forEach(function (valor) {
+                option += '<option value="' + valor.alumno_id + '">' + valor.nombre + ' ' + valor.apellido + '</option>';
             });
             document.querySelector('#listAlumno').innerHTML = option;
         }
@@ -93,13 +93,13 @@ function getOptionAlumnos() {
 function getOptionCursos() {
     var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
     var ajaxUrl = './models/options/options-cursos.php';
-    request.open('GET',ajaxUrl,true);
+    request.open('GET', ajaxUrl, true);
     request.send();
-    request.onreadystatechange = function() {
-        if(request.readyState == 4 && request.status == 200) {
+    request.onreadystatechange = function () {
+        if (request.readyState == 4 && request.status == 200) {
             var option = JSON.parse(request.responseText);
-            option.forEach(function(valor){
-               option += '<option value="'+valor.curso_id+'">Materia: '+valor.nombre_materia+', Profesor: '+valor.nombre+'</option>';  
+            option.forEach(function (valor) {
+                option += '<option value="' + valor.curso_id + '">Materia: ' + valor.nombre_materia + ', Profesor: ' + valor.nombre + '</option>';
             });
             document.querySelector('#listCurso').innerHTML = option;
         }
@@ -108,13 +108,13 @@ function getOptionCursos() {
 function getOptionTurnos() {
     var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
     var ajaxUrl = './models/options/options-turnos.php';
-    request.open('GET',ajaxUrl,true);
+    request.open('GET', ajaxUrl, true);
     request.send();
-    request.onreadystatechange = function() {
-        if(request.readyState == 4 && request.status == 200) {
+    request.onreadystatechange = function () {
+        if (request.readyState == 4 && request.status == 200) {
             var option = JSON.parse(request.responseText);
-            option.forEach(function(valor){
-               option += '<option value="'+valor.turno_id+'">'+valor.tipo_turno+'</option>';  
+            option.forEach(function (valor) {
+                option += '<option value="' + valor.turno_id + '">' + valor.tipo_turno + '</option>';
             });
             document.querySelector('#listTurno').innerHTML = option;
         }
@@ -123,30 +123,30 @@ function getOptionTurnos() {
 
 function editInscripcion() {
     var btnEditInscripcion = document.querySelectorAll('.btnEditInscripcion');
-    btnEditInscripcion.forEach(function(btnEditInscripcion){
-        btnEditInscripcion.addEventListener('click',function(){
+    btnEditInscripcion.forEach(function (btnEditInscripcion) {
+        btnEditInscripcion.addEventListener('click', function () {
             document.querySelector('#titleModal').innerHTML = 'Actualizar Inscripcion';
-            document.querySelector('.modal-header').classList.replace('headerRegister','updateRegister');
-            document.querySelector('#btnActionForm').classList.replace('btn-primary','btn-info');
+            document.querySelector('.modal-header').classList.replace('headerRegister', 'updateRegister');
+            document.querySelector('#btnActionForm').classList.replace('btn-primary', 'btn-info');
             document.querySelector('#btnText').innerHTML = 'Actualizar';
 
             var idInscripcion = this.getAttribute('rl');
 
             var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-            var ajaxUrl = './models/inscripciones/edit_inscripciones.php?id='+idInscripcion;
-            request.open('GET',ajaxUrl,true);
+            var ajaxUrl = './models/inscripciones/edit_inscripciones.php?id=' + idInscripcion;
+            request.open('GET', ajaxUrl, true);
             request.send();
-            request.onreadystatechange = function() {
-                if(request.readyState == 4 && request.status == 200) {
+            request.onreadystatechange = function () {
+                if (request.readyState == 4 && request.status == 200) {
                     var objData = JSON.parse(request.responseText);
-                    if(objData.status) {
+                    if (objData.status) {
                         document.querySelector('#idInscripcion').value = objData.data.inscripcion_id;
                         document.querySelector('#listAlumno').value = objData.data.alumno_id;
                         document.querySelector('#listCurso').value = objData.data.curso_id;
                         document.querySelector('#listTurno').value = objData.data.turno_id;
                         document.querySelector('#listStatus').value = objData.data.estatusI;
 
-                        if(objData.data.estatusI == 1) {
+                        if (objData.data.estatusI == 1) {
                             var optionSelect = '<option value="1" selected class="notBlock">Activo</option>';
                         } else {
                             var optionSelect = '<option value="2" selected class="notBlock">Inactivo</option>';
@@ -159,7 +159,7 @@ function editInscripcion() {
 
                         $('#modalFormInscripcion').modal('show');
                     } else {
-                        swal('Atencion',objData.msg,'error');
+                        swal('Atencion', objData.msg, 'error');
                     }
                 }
             }
@@ -169,8 +169,8 @@ function editInscripcion() {
 
 function delInscripcion() {
     var btnDelInscripcion = document.querySelectorAll('.btnDelInscripcion');
-    btnDelInscripcion.forEach(function(btnDelInscripcion){
-        btnDelInscripcion.addEventListener('click',function(){
+    btnDelInscripcion.forEach(function (btnDelInscripcion) {
+        btnDelInscripcion.addEventListener('click', function () {
             var idInscripcion = this.getAttribute('rl');
 
             swal({
@@ -182,25 +182,25 @@ function delInscripcion() {
                 cancelButtonText: "No, cancelar",
                 closeOnConfirm: false,
                 closeOnCancel: true
-            },function(Confirm){
-                if(Confirm) {
+            }, function (Confirm) {
+                if (Confirm) {
                     var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
                     var ajaxDelInscripcion = './models/inscripciones/delet_inscripcion.php';
-                    var strData = "idInscripcion="+idInscripcion;
-                    request.open('POST',ajaxDelInscripcion,true);
-                    request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                    var strData = "idInscripcion=" + idInscripcion;
+                    request.open('POST', ajaxDelInscripcion, true);
+                    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     request.send(strData);
-                    request.onreadystatechange = function() {
-                        if(request.readyState == 4 && request.status == 200) {
+                    request.onreadystatechange = function () {
+                        if (request.readyState == 4 && request.status == 200) {
                             var objData = JSON.parse(request.responseText);
-                            if(objData.status) {
-                                swal("Eliminar!", objData.msg , "success");
-                                tableInscripciones.ajax.reload(function(){
+                            if (objData.status) {
+                                swal("Eliminar!", objData.msg, "success");
+                                tableInscripciones.ajax.reload(function () {
                                     delInscripcion();
                                     editInscripcion();
                                 });
                             } else {
-                                swal("Atencion",objData.msg,"error");
+                                swal("Atencion", objData.msg, "error");
                             }
                         }
                     }
@@ -213,8 +213,8 @@ function delInscripcion() {
 function openModalInscripcion() {
     document.querySelector('#idInscripcion').value = "";
     document.querySelector('#titleModal').innerHTML = 'Nueva Inscripcion';
-    document.querySelector('.modal-header').classList.replace('updateRegister','headerRegister');
-    document.querySelector('#btnActionForm').classList.replace('btn-info','btn-primary');
+    document.querySelector('.modal-header').classList.replace('updateRegister', 'headerRegister');
+    document.querySelector('#btnActionForm').classList.replace('btn-info', 'btn-primary');
     document.querySelector('#btnText').innerHTML = 'Guardar';
     document.querySelector('#formInscripcion').reset();
     $('#modalFormInscripcion').modal('show');

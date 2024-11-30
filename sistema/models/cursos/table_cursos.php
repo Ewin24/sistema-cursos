@@ -10,18 +10,18 @@ $query->execute();
 
 $data = $query->fetchAll(PDO::FETCH_ASSOC);
 
-for($i = 0;$i < count($data);$i++) {
-    if($data[$i]['estatusC'] == 1) {
+for ($i = 0; $i < count($data); $i++) {
+    if ($data[$i]['estatusC'] == 1) {
         $data[$i]['estatusC'] = '<span class="badge badge-success">Activo</span>';
     } else {
         $data[$i]['estatusC'] = '<span class="badge badge-danger">Inactivo</span>';
     }
 
     $data[$i]['options'] = '<div class="text-center">
-        <button class="btn btn-primary btn-sm btnEditCurso" rl="'.$data[$i]['curso_id'].'" title="Editar"><i class="fas fa-pencil-alt"></i></button>
-        <button class="btn btn-danger btn-sm btnDelCurso" rl="'.$data[$i]['curso_id'].'" title="Eliminar"><i class="fas fa-trash-alt"></i></button>                   
+        <button class="btn btn-primary btn-sm btnEditCurso" rl="' . $data[$i]['curso_id'] . '" title="Editar"><i class="fas fa-pencil-alt"></i></button>
+        <button class="btn btn-danger btn-sm btnDelCurso" rl="' . $data[$i]['curso_id'] . '" title="Eliminar"><i class="fas fa-trash-alt"></i></button>                   
                                </div>';
 }
 
-echo json_encode($data,JSON_UNESCAPED_UNICODE);
+echo json_encode($data, JSON_UNESCAPED_UNICODE);
 die();

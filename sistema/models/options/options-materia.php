@@ -17,5 +17,4 @@ if(count($data) > 0) {
 echo $htmlOption;
 */
 echo json_encode($data,JSON_UNESCAPED_UNICODE);
-
 ?>

@@ -1,7 +1,7 @@
 <?php
 session_start();
-if(empty($_SESSION['active'])) {
-  header("Location: ../");
+if (empty($_SESSION['active'])) {
+    header("Location: ../");
 }
 require_once 'includes/session.php';
 require_once 'includes/header.php';

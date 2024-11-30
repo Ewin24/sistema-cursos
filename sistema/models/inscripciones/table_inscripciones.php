@@ -7,21 +7,17 @@ $query = $pdo->prepare($sql);
 $query->execute();
 $data = $query->fetchAll(PDO::FETCH_ASSOC);
 
-for($i = 0;$i < count($data);$i++) {
-    if($data[$i]['estatusI'] == 1) {
+for ($i = 0; $i < count($data); $i++) {
+    if ($data[$i]['estatusI'] == 1) {
         $data[$i]['estatusI'] = '<span class="badge badge-success">Activo</span>';
     } else {
         $data[$i]['estatusI'] = '<span class="badge badge-danger">Inactivo</span>';
     }
 
     $data[$i]['options'] = '<div class="text-center">
-            <button class="btn btn-primary btn-sm btnEditInscripcion" rl="'.$data[$i]['inscripcion_id'].'" title="Editar"><i class="fas fa-pencil-alt"></i></button>
-            <button class="btn btn-danger btn-sm btnDelInscripcion" rl="'.$data[$i]['inscripcion_id'].'" title="Eliminar"><i class="fas fa-trash-alt"></i></button>                   
+            <button class="btn btn-primary btn-sm btnEditInscripcion" rl="' . $data[$i]['inscripcion_id'] . '" title="Editar"><i class="fas fa-pencil-alt"></i></button>
+            <button class="btn btn-danger btn-sm btnDelInscripcion" rl="' . $data[$i]['inscripcion_id'] . '" title="Eliminar"><i class="fas fa-trash-alt"></i></button>                   
                            </div>';
 }
-echo json_encode($data,JSON_UNESCAPED_UNICODE);
+echo json_encode($data, JSON_UNESCAPED_UNICODE);
 die();
-
-
-
-// SELECT COUNT(alumno_id) AS cantidad, curso_id FROM inscripcion GROUP BY curso_id

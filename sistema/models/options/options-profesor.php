@@ -6,6 +6,6 @@ $sqlConsultaProfesor = "SELECT profesor_id,nombre,apellido FROM profesor WHERE e
 $queryConsultaProfesor = $pdo->prepare($sqlConsultaProfesor);
 $queryConsultaProfesor->execute();
 $data = $queryConsultaProfesor->fetchAll(PDO::FETCH_ASSOC);
-echo json_encode($data,JSON_UNESCAPED_UNICODE);
+echo json_encode($data, JSON_UNESCAPED_UNICODE);
 
 ?>

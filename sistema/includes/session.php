@@ -1,5 +1,4 @@
 <?php
- 
     $inactivo = 200;
  
     if(isset($_SESSION['tiempo']) ) {

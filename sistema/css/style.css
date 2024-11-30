@@ -29,6 +29,8 @@
     color: #fff;
 }
 
-.app-nav, .app-header, .app-sidebar {
+.app-nav,
+.app-header,
+.app-sidebar {
     background: #336666 !important;
 }

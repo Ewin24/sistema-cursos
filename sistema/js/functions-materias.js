@@ -1,7 +1,7 @@
 $('#tableMaterias').DataTable();
 var tableMaterias;
 
-document.addEventListener('DOMContentLoaded',function(){
+document.addEventListener('DOMContentLoaded', function () {
     tableMaterias = $('#tableMaterias').DataTable({
         "aProcessing": true,
         "aServerSide": true,
@@ -13,83 +13,83 @@ document.addEventListener('DOMContentLoaded',function(){
             "dataSrc": ""
         },
         "columns": [
-            {"data":"materia_id"},
-            {"data":"nombre_materia"},
-            {"data":"estatus"},
-            {"data":"options"},
+            { "data": "materia_id" },
+            { "data": "nombre_materia" },
+            { "data": "estatus" },
+            { "data": "options" },
         ],
         "resonsieve": true,
         "bDestroy": true,
         "iDisplayLength": 10,
-        "order": [[0,"asc"]]
+        "order": [[0, "asc"]]
     });
 
     // CREAR MATERIA
     var formMateria = document.querySelector('#formMateria');
-    formMateria.onsubmit = function(e) {
+    formMateria.onsubmit = function (e) {
         e.preventDefault();
         var idMateria = document.querySelector('#idMateria').value;
         var nombre = document.querySelector('#txtNombre').value;
         var status = document.querySelector('#listStatus').value;
 
-        if(nombre == '' || status == '') {
-            swal('Atencion','Todos los campos son necesarios','error');
+        if (nombre == '' || status == '') {
+            swal('Atencion', 'Todos los campos son necesarios', 'error');
             return false;
         }
 
         var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
         var ajaxUrl = './models/materias/ajax-materias.php';
-        request.open('POST',ajaxUrl,true);
+        request.open('POST', ajaxUrl, true);
         var strData = new FormData(formMateria);
         request.send(strData);
-        request.onreadystatechange = function() {
-            if(request.readyState == 4 && request.status == 200) {
+        request.onreadystatechange = function () {
+            if (request.readyState == 4 && request.status == 200) {
                 var objData = JSON.parse(request.responseText);
-                if(objData.status) {
+                if (objData.status) {
                     $('#modalFormMateria').modal('hide');
                     formMateria.reset();
-                    swal('Crear Materia',objData.msg,'success');
-                    tableMaterias.ajax.reload(function(){
+                    swal('Crear Materia', objData.msg, 'success');
+                    tableMaterias.ajax.reload(function () {
                         editMateria();
                         delMateria();
                     })
                 } else {
-                    swal('Atencion',objData.msg,'error');
+                    swal('Atencion', objData.msg, 'error');
                 }
             }
         }
     }
 });
 
-window.addEventListener('load',function(){
+window.addEventListener('load', function () {
     editMateria();
     delMateria();
-},false);
+}, false);
 
 function editMateria() {
     var btnEditMateria = document.querySelectorAll('.btnEditMateria');
-    btnEditMateria.forEach(function(btnEditMateria){
-        btnEditMateria.addEventListener('click',function(){
+    btnEditMateria.forEach(function (btnEditMateria) {
+        btnEditMateria.addEventListener('click', function () {
             document.querySelector('#titleModal').innerHTML = 'Actualizar Materia';
-            document.querySelector('.modal-header').classList.replace('headerRegister','updateRegister');
-            document.querySelector('#btnActionForm').classList.replace('btn-primary','btn-info');
+            document.querySelector('.modal-header').classList.replace('headerRegister', 'updateRegister');
+            document.querySelector('#btnActionForm').classList.replace('btn-primary', 'btn-info');
             document.querySelector('#btnText').innerHTML = 'Actualizar';
 
             var idMateria = this.getAttribute('rl');
 
             var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-            var ajaxUrl = './models/materias/edit_materias.php?id='+idMateria;
-            request.open('GET',ajaxUrl,true);
+            var ajaxUrl = './models/materias/edit_materias.php?id=' + idMateria;
+            request.open('GET', ajaxUrl, true);
             request.send();
-            request.onreadystatechange = function() {
-                if(request.readyState == 4 && request.status == 200) {
+            request.onreadystatechange = function () {
+                if (request.readyState == 4 && request.status == 200) {
                     var objData = JSON.parse(request.responseText);
-                    if(objData.status) {
+                    if (objData.status) {
                         document.querySelector('#idMateria').value = objData.data.materia_id;
                         document.querySelector('#txtNombre').value = objData.data.nombre_materia;
                         document.querySelector('#listStatus').value = objData.data.estatus;
 
-                        if(objData.data.estatus == 1) {
+                        if (objData.data.estatus == 1) {
                             var optionSelect = '<option value="1" selected class="notBlock">Activo</option>';
                         } else {
                             var optionSelect = '<option value="2" selected class="notBlock">Inactivo</option>';
@@ -102,7 +102,7 @@ function editMateria() {
 
                         $('#modalFormMateria').modal('show');
                     } else {
-                        swal('Atencion',objData.msg,'error');
+                        swal('Atencion', objData.msg, 'error');
                     }
                 }
             }
@@ -112,8 +112,8 @@ function editMateria() {
 
 function delMateria() {
     var btnDelMateria = document.querySelectorAll('.btnDelMateria');
-    btnDelMateria.forEach(function(btnDelMateria){
-        btnDelMateria.addEventListener('click',function(){
+    btnDelMateria.forEach(function (btnDelMateria) {
+        btnDelMateria.addEventListener('click', function () {
             var idMateria = this.getAttribute('rl');
 
             swal({
@@ -125,25 +125,25 @@ function delMateria() {
                 cancelButtonText: "No, cancelar",
                 closeOnConfirm: false,
                 closeOnCancel: true
-            },function(Confirm){
-                if(Confirm) {
+            }, function (Confirm) {
+                if (Confirm) {
                     var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
                     var ajaxDelMateria = './models/materias/delet_materia.php';
-                    var strData = "idMateria="+idMateria;
-                    request.open('POST',ajaxDelMateria,true);
-                    request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                    var strData = "idMateria=" + idMateria;
+                    request.open('POST', ajaxDelMateria, true);
+                    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     request.send(strData);
-                    request.onreadystatechange = function() {
-                        if(request.readyState == 4 && request.status == 200) {
+                    request.onreadystatechange = function () {
+                        if (request.readyState == 4 && request.status == 200) {
                             var objData = JSON.parse(request.responseText);
-                            if(objData.status) {
-                                swal("Eliminar!", objData.msg , "success");
-                                tableMaterias.ajax.reload(function(){
+                            if (objData.status) {
+                                swal("Eliminar!", objData.msg, "success");
+                                tableMaterias.ajax.reload(function () {
                                     editMateria();
                                     delMateria();
                                 });
                             } else {
-                                swal("Atencion",objData.msg,"error");
+                                swal("Atencion", objData.msg, "error");
                             }
                         }
                     }
@@ -156,8 +156,8 @@ function delMateria() {
 function openModalMateria() {
     document.querySelector('#idMateria').value = "";
     document.querySelector('#titleModal').innerHTML = 'Nueva Materia';
-    document.querySelector('.modal-header').classList.replace('updateRegister','headerRegister');
-    document.querySelector('#btnActionForm').classList.replace('btn-info','btn-primary');
+    document.querySelector('.modal-header').classList.replace('updateRegister', 'headerRegister');
+    document.querySelector('#btnActionForm').classList.replace('btn-info', 'btn-primary');
     document.querySelector('#btnText').innerHTML = 'Guardar';
     document.querySelector('#formMateria').reset();
     $('#modalFormMateria').modal('show');

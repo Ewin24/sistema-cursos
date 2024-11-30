@@ -6,4 +6,4 @@ $sqlCurso = "SELECT * FROM curso as c INNER JOIN materia as m ON c.materia_id = 
 $queryCurso = $pdo->prepare($sqlCurso);
 $queryCurso->execute();
 $data = $queryCurso->fetchAll(PDO::FETCH_ASSOC);
-echo json_encode($data,JSON_UNESCAPED_UNICODE);
+echo json_encode($data, JSON_UNESCAPED_UNICODE);
